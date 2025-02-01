@@ -106,6 +106,18 @@
             "cat-cry2.jpg", 
             "cat-cry1.jpg"
         ];
+document.addEventListener("DOMContentLoaded", function() {
+    let backgroundMusic = document.getElementById('backgroundMusic');
+
+    function playMusic() {
+        backgroundMusic.play().catch(() => {
+            console.log("Autoplay blocked. Waiting for user interaction.");
+        });
+        document.removeEventListener('click', playMusic);
+    }
+
+    document.addEventListener('click', playMusic);
+});
 
         function acceptLove() {
             document.body.innerHTML = `<h1>YAY! ❤️ I Love You! 🎉</h1><img src='cat-jump.gif' width='300'>
@@ -149,6 +161,7 @@
             }
             move();
         }
+        
     </script>
 </body>
 </html>
