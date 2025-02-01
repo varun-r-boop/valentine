@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? ❤️</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, #c92577, #ff7eb3);
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+        .container {
+            position: relative;
+            top: 20vh;
+        }
+        .heart {
+            font-size: 3rem;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .buttons {
+            margin-top: 20px;
+            position: relative;
+        }
+        .btn {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .yes {
+            background: #28a745;
+            color: white;
+        }
+        .no {
+            background: #dc3545;
+            color: white;
+            position: absolute;
+        }
+        .hidden {
+            display: none;
+        }
+        .gif-container {
+            margin-top: 20px;
+        }
+        @media (max-width: 600px) {
+            .heart {
+                font-size: 2rem;
+            }
+            .btn {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="backgroundMusic" loop autoplay>
+        <source src="sad_hamster_meme_theme.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="catLaugh" class="hidden" loop>
+        <source src="cat-laugh.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="happyMusic" class="hidden">
+        <source src="happy-happy.mp3" type="audio/mpeg">
+    </audio>
+    
+    <div class="container">
+        <h1 class="heart">❤️ Will You Be My Valentine? ❤️</h1>
+        <img id="valentineImage" src="hamster-flower.jpg" alt="Your Image" width="150" style="border-radius: 50%;">
+        <p id="message">Please say yes! 🥺</p>
+        <div class="buttons">
+            <button class="btn yes hidden" id="yesBtn" onclick="acceptLove()">You Have No Other Choice ❤️</button>
+            <button class="btn no" id="noBtn" onclick="rejectLove()">NO</button>
+        </div>
+        <div id="gifContainer" class="gif-container hidden">
+            <img id="reactionGif" src="" alt="Reaction GIF" width="200">
+        </div> 
+    </div>
+
+    <script>
+        let noClickCount = 0;
+        let noBtn = document.getElementById('noBtn');
+        let yesBtn = document.getElementById('yesBtn');
+        let message = document.getElementById('message');
+        let valentineImage = document.getElementById('valentineImage');
+        let catLaugh = document.getElementById('catLaugh');
+        let happyMusic = document.getElementById('happyMusic');
+        let backgroundMusic = document.getElementById('backgroundMusic');
+        let gifContainer = document.getElementById('gifContainer');
+        let reactionGif = document.getElementById('reactionGif');
+        let images = [
+        "hamster-flower.jpg", 
+            "hamster-pookie.jpg", 
+            "cat-cry3.jpg", 
+            "cat-cry2.jpg", 
+            "cat-cry1.jpg"
+        ];
+
+        function acceptLove() {
+            document.body.innerHTML = `<h1>YAY! ❤️ I Love You! 🎉</h1><img src='cat-jump.gif' width='300'>
+            <audio id="happyMusic" loop autoplay> <source src="happy-happy.mp3" type="audio/mpeg">
+    </audio>`;
+            happyMusic.play();
+        }
+
+        function rejectLove() {
+            noClickCount++;
+            if (noClickCount < 5) {
+                message.innerText = `Are you sure? 😢 (${noClickCount}/5)`;
+                valentineImage.src = images[noClickCount % images.length];
+            } else {
+                message.innerText = "No more choices left! 😈";
+                yesBtn.classList.remove('hidden');
+                backgroundMusic.pause();
+                catLaugh.play();
+                valentineImage.src = "cat-laugh-gif.jpg";
+                rotateNoButton();
+            }
+        }
+
+        function showGif(gifSrc) {
+            gifContainer.classList.remove('hidden');
+            reactionGif.src = gifSrc;
+        }
+
+        function rotateNoButton() {
+            let angle = 0;
+            let radius = 100;
+            let centerX = window.innerWidth / 2;
+            let centerY = window.innerHeight / 2 + 50;
+            function move() {
+                angle += 15;
+                let x = centerX + radius * Math.cos(angle * Math.PI / 180) - noBtn.offsetWidth / 2;
+                let y = centerY + radius * Math.sin(angle * Math.PI / 180) - noBtn.offsetHeight / 2 - 200;
+                noBtn.style.left = `${x}px`;
+                noBtn.style.top = `${y}px`;
+                requestAnimationFrame(move);
+            }
+            move();
+        }
+    </script>
+</body>
+</html>
